@@ -7,13 +7,43 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  
+  // --- NEW: Validation State ---
+  const [emailError, setEmailError] = useState<string>('');
+
+  // --- NEW: Regex Validation Function ---
+  const validateEmail = (email: string) => {
+    // Requires: chars + @ + chars + . + extension (2-6 chars)
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return regex.test(email);
+  };
+
+  // --- NEW: Check when user leaves the field ---
+  const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const email = e.target.value;
+    if (email && !validateEmail(email)) {
+      setEmailError("Veuillez entrer une adresse email valide (ex: contact@domaine.com)");
+    } else {
+      setEmailError('');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // --- NEW: Block submission if email is invalid ---
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+
+    if (!validateEmail(email)) {
+      setEmailError("Adresse email invalide. Impossible d'envoyer.");
+      return; // STOP execution here
+    }
+
     setIsSubmitting(true);
     setResult(null);
+    setEmailError(''); // Clear previous errors
 
-    const formData = new FormData(e.currentTarget);
     // Add custom subject for your email inbox
     formData.append("subject", "Nouvelle demande - Site EauSûre"); 
 
@@ -70,7 +100,7 @@ export default function Contact() {
             </div>
             <div className="flex items-center gap-4 text-slate-300">
               <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-cyan-400">#</div>
-              <span>+216 XX XXX XXX</span>
+              <span>+216 55 130 119</span>
             </div>
           </div>
         </div>
@@ -94,13 +124,13 @@ export default function Contact() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-    
-    {/* USE THE VARIABLE HERE */}
-    <input 
-      type="hidden" 
-      name="access_key" 
-      value={process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY} 
-    />
+            
+            {/* SECURE KEY INJECTION */}
+            <input 
+              type="hidden" 
+              name="access_key" 
+              value={process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY} 
+            />
             
             {/* Honeypot to prevent spam bots (Hidden) */}
             <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
@@ -116,6 +146,7 @@ export default function Contact() {
               />
             </div>
 
+            {/* --- UPDATED EMAIL INPUT --- */}
             <div className="group">
               <label className="block text-xs uppercase text-slate-500 mb-2 group-focus-within:text-cyan-400 transition-colors">Email</label>
               <input 
@@ -123,8 +154,23 @@ export default function Contact() {
                 name="email"
                 required
                 placeholder="votre@email.com" 
-                className="w-full bg-[#0b121c] border border-slate-700 rounded-xl p-4 text-white focus:outline-none focus:border-cyan-500 transition-colors placeholder:text-slate-600"
+                // Checks validity when clicking out of the box
+                onBlur={handleEmailBlur}
+                // Clears error when typing
+                onChange={() => setEmailError('')}
+                // Conditional styling based on error state
+                className={`w-full bg-[#0b121c] border rounded-xl p-4 text-white focus:outline-none transition-colors placeholder:text-slate-600
+                  ${emailError 
+                    ? 'border-red-500 focus:border-red-500' // RED if error
+                    : 'border-slate-700 focus:border-cyan-500' // NORMAL
+                  }`}
               />
+              {/* Error Message Text */}
+              {emailError && (
+                <p className="text-red-400 text-xs mt-2 flex items-center gap-1">
+                   <AlertCircle className="w-3 h-3" /> {emailError}
+                </p>
+              )}
             </div>
 
             <div className="group">
@@ -138,7 +184,7 @@ export default function Contact() {
               />
             </div>
 
-            {/* Error Message Display */}
+            {/* Global Error Message Display */}
             {status === 'error' && (
                 <div className="flex items-center gap-2 text-red-400 text-sm bg-red-900/20 p-3 rounded-lg border border-red-900/50">
                     <AlertCircle className="w-4 h-4" />
@@ -154,7 +200,7 @@ export default function Contact() {
               {isSubmitting ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Initialisation...
+                    Validation...
                   </>
               ) : (
                   <>

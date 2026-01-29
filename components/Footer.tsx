@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="flex gap-8 text-sm text-slate-500">
           <a href="#" className="hover:text-cyan-400 transition-colors">Mentions Légales</a>
           <a href="#" className="hover:text-cyan-400 transition-colors">Documentation</a>
-          <a href="#" className="hover:text-cyan-400 transition-colors">GitHub</a>
+          <a href="https://github.com/EauSure" className="hover:text-cyan-400 transition-colors">GitHub</a>
         </div>
 
       </div>
