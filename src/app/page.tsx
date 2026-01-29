@@ -1,65 +1,131 @@
-import Image from "next/image";
+'use client'
+
+import { motion, Variants } from 'framer-motion';
+import FallAlert from '../../components/FallAlert';
+import HeroSceneWrapper from '../../components/HeroSceneWrapper';
+
+// --- Animation Config ---
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.5,
+    }
+  }
+};
+
+const fadeInUp: Variants = {
+  hidden: { y: 30, opacity: 0 },
+  show: { 
+    y: 0, 
+    opacity: 1,
+    transition: { duration: 0.8, ease: "easeOut" }
+  }
+};
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="min-h-screen overflow-hidden">
+      
+      {/* --- SECTION 1: HERO SPLIT-SCREEN --- */}
+      {/* 1. Removed 'pt-20'. Added 'min-h-[90vh]' to ensure it fits well on mobile screens */}
+      <section className="relative min-h-[90vh] lg:min-h-screen grid grid-cols-1 lg:grid-cols-2 items-center">
+        
+        {/* LEFT COLUMN: 3D Sphere */}
+        {/* 2. Reduced mobile height to 'h-[35vh]' (was 50vh). This pulls the text up. */}
+        <div className="h-[35vh] lg:h-screen w-full relative z-0 lg:order-1 flex items-center justify-center cursor-move active:cursor-grabbing">
+          <div className="w-full h-full lg:scale-110 transform origin-center">
+             <HeroSceneWrapper />
+          </div>
+        </div>
+
+        {/* RIGHT COLUMN: Text & Content */}
+        {/* 3. Reduced 'pb-20' and padding. Added '-mt-8' on mobile to pull text closer to sphere. */}
+        <div className="relative z-10 px-6 lg:px-16 flex flex-col justify-center lg:order-2 pb-10 lg:pb-0 -mt-8 lg:mt-0">
+          
+          <h1 className="text-5xl lg:text-8xl font-bold tracking-tighter text-white mb-4">
+            Eau<span className="text-cyan-400">Sûre</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-lg lg:text-xl text-cyan-200/90 max-w-lg font-light mb-8 lg:mb-12">
+            L'intelligence artificielle au service de l'eau potable en milieux confinés.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+            className="space-y-6 border-l-2 border-cyan-500/30 pl-6"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <motion.div variants={fadeInUp} className="group">
+              <h3 className="text-cyan-400 font-mono text-xs lg:text-sm uppercase mb-1 flex items-center gap-2">
+                <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+                Surveillance IoT Autonome
+              </h3>
+              <p className="text-sm lg:text-base text-slate-300 leading-relaxed group-hover:text-white transition-colors">
+                Déploiement "Drop & Forget". 10 ans d'autonomie (Li-SOCl2).
+              </p>
+            </motion.div>
+
+            <motion.div variants={fadeInUp} className="group">
+               <h3 className="text-cyan-400 font-mono text-xs lg:text-sm uppercase mb-1 flex items-center gap-2">
+                <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+                Sécurité Active (Wake-on-Motion)
+              </h3>
+              <p className="text-sm lg:text-base text-slate-300 leading-relaxed group-hover:text-white transition-colors">
+                Détection de chute instantanée via accéléromètre embarqué.
+              </p>
+            </motion.div>
+
+             <motion.div variants={fadeInUp}>
+              <button className="mt-2 px-8 py-3 bg-gradient-to-r from-cyan-600 to-cyan-800 hover:from-cyan-500 hover:to-cyan-700 text-white rounded-full font-semibold tracking-wide transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+                Découvrir la Solution →
+              </button>
+            </motion.div>
+          </motion.div>
+
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* --- SECTION 2: BENTO GRID (Inchanged) --- */}
+      <section className="relative z-20 bg-[#000810] py-16 px-6">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl lg:text-3xl font-light mb-8 lg:mb-12 text-cyan-50">Architecture Technique</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-8 rounded-3xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm">
+              <h3 className="text-cyan-400 font-mono text-sm mb-2">CORE_UNIT</h3>
+              <p className="text-2xl font-semibold">ESP32-S3 + LoRaWAN</p>
+              <p className="text-slate-400 mt-2 text-sm">Transmission longue portée.</p>
+            </div>
+            <div className="md:col-span-2 p-1 rounded-3xl bg-gradient-to-br from-slate-800 to-slate-900">
+              <div className="h-full w-full bg-[#0b121c] rounded-[22px] p-8 flex flex-col justify-center">
+                 <FallAlert />
+              </div>
+            </div>
+            <div className="md:col-span-2 p-8 rounded-3xl bg-slate-900/50 border border-slate-800">
+              <h3 className="text-green-400 font-mono text-sm mb-2">POWER_MGMT</h3>
+              <div className="flex items-center gap-4">
+                <span className="text-4xl lg:text-5xl font-bold text-white">10 Ans</span>
+                <span className="text-slate-400 text-sm lg:text-base">d'autonomie estimée<br/>(Deep Sleep)</span>
+              </div>
+            </div>
+             <div className="p-8 rounded-3xl bg-slate-900/50 border border-slate-800">
+              <h3 className="text-purple-400 font-mono text-sm mb-2">ANALYSIS</h3>
+              <ul className="space-y-2 text-slate-300 text-sm">
+                <li className="flex justify-between border-b border-slate-800 pb-2">
+                  <span>pH / TDS</span> <span>Actifs</span>
+                </li>
+                <li className="flex justify-between pt-2">
+                  <span>Anti-Fouling</span> <span>Auto</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
   );
 }
