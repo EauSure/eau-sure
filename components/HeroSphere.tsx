@@ -1,51 +1,68 @@
 'use client'
 import { Canvas } from '@react-three/fiber'
-import { MeshDistortMaterial, Float, Sphere, OrbitControls } from '@react-three/drei'
+import { MeshDistortMaterial, Float, OrbitControls } from '@react-three/drei'
+// We use 'animated' and 'useSpring' from react-spring instead
+import { useSpring, animated } from '@react-spring/three'
 import { useState } from 'react'
+import * as THREE from 'three'
+
+// 1. Create an animated version of the custom material
+const AnimatedDistortMaterial = animated(MeshDistortMaterial)
 
 function LivingWater() {
-  const [hovered, setHover] = useState(false)
   const [active, setActive] = useState(false)
 
+  // 2. Define the physics-based animation (The "Spring")
+  const { scale, color, distort, speed, rotation } = useSpring({
+    scale: active ? 1.8 : 1.5,
+    color: active ? "#22d3ee" : "#0e7490", // Cyan vs Dark Blue
+    distort: active ? 0.6 : 0.4,
+    speed: active ? 4 : 2,
+    rotation: active ? Math.PI : 0,
+    config: { mass: 1, tension: 170, friction: 26 } // "Bouncy" physics config
+  })
+
   return (
-    // Float makes it bob gently
-    <Float speed={4} rotationIntensity={1} floatIntensity={2}>
-      <Sphere 
-        args={[1, 64, 64]} 
-        // 1. Reduced scale slightly (from 2.4 to 2.2) so it doesn't feel "too big" on mobile
-        scale={2.2}
+    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+      {/* 3. Use animated.mesh instead of motion.mesh */}
+      <animated.mesh
+        scale={scale}
+        rotation-y={rotation}
+        onPointerOver={() => setActive(true)}
+        onPointerOut={() => setActive(false)}
         onClick={() => setActive(!active)}
-        onPointerOver={() => setHover(true)}
-        onPointerOut={() => setHover(false)}
       >
-        {/* DistortMaterial with dynamic state */}
-        <MeshDistortMaterial
-          color={active ? "#22d3ee" : "#4fd1c5"} // Changes color on click
+        <sphereGeometry args={[1, 64, 64]} />
+        
+        <AnimatedDistortMaterial
+          color={color}
+          distort={distort}
+          speed={speed}
           envMapIntensity={1}
           clearcoat={1}
-          clearcoatRoughness={0}
+          clearcoatRoughness={0.1}
           metalness={0.1}
-          distort={active ? 0.6 : 0.4} // Distorts more when clicked
-          speed={hovered ? 4 : 2}      // Moves faster when hovered
         />
-      </Sphere>
+      </animated.mesh>
     </Float>
   )
 }
 
 export default function HeroSphere() {
   return (
-    <div className="h-full w-full">
-      <Canvas camera={{ position: [0, 0, 5] }}>
-        <ambientLight intensity={1} />
+    <div className="h-full w-full" style={{ touchAction: 'none' }}>
+      <Canvas camera={{ position: [0, 0, 4.5] }} dpr={[1, 2]}>
+        <ambientLight intensity={1.5} />
         <directionalLight position={[10, 10, 5]} intensity={2} />
-        <directionalLight position={[-10, -10, -5]} color="blue" intensity={1} />
+        <directionalLight position={[-10, -10, -5]} color="#22d3ee" intensity={2} />
         
         <LivingWater />
         
-        {/* 2. Enable Mouse/Touch Rotation */}
-        {/* enableZoom={false} prevents getting stuck while scrolling the page */}
-        <OrbitControls enableZoom={false} enablePan={false} minPolarAngle={Math.PI / 4} maxPolarAngle={Math.PI / 1.5} />
+        <OrbitControls 
+          enableZoom={false} 
+          enablePan={false}
+          rotateSpeed={0.5}
+        />
       </Canvas>
     </div>
   )

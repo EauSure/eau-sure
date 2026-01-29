@@ -3,6 +3,8 @@
 import { motion, Variants } from 'framer-motion';
 import FallAlert from '../../components/FallAlert';
 import HeroSceneWrapper from '../../components/HeroSceneWrapper';
+import DashboardPreview from '../../components/DashboardPreview';
+import Connectivity from '../../components/Connectivity';
 
 // --- Animation Config ---
 const staggerContainer: Variants = {
@@ -34,9 +36,11 @@ export default function Home() {
       <section className="relative min-h-[90vh] lg:min-h-screen grid grid-cols-1 lg:grid-cols-2 items-center">
         
         {/* LEFT COLUMN: 3D Sphere */}
-        {/* 2. Reduced mobile height to 'h-[35vh]' (was 50vh). This pulls the text up. */}
-        <div className="h-[35vh] lg:h-screen w-full relative z-0 lg:order-1 flex items-center justify-center cursor-move active:cursor-grabbing">
-          <div className="w-full h-full lg:scale-110 transform origin-center">
+        {/* Changed 'h-[35vh]' to 'h-[45vh]' to give it more breathing room */}
+        {/* Added 'overflow-visible' so the glow isn't cut off */}
+        <div className="h-[45vh] lg:h-screen w-full relative z-0 lg:order-1 flex items-center justify-center overflow-visible cursor-move active:cursor-grabbing">
+          {/* Removed 'scale-110' which was making it too big */}
+          <div className="w-full h-full transform origin-center">
              <HeroSceneWrapper />
           </div>
         </div>
@@ -126,6 +130,31 @@ export default function Home() {
         </div>
       </section>
 
+      {/* --- SECTION 3: CONNECTIVITY FLOW --- */}
+      <section className="relative z-20 bg-[#000810] py-12 px-6 border-t border-slate-900">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-light text-white">De la source à l'écran</h2>
+            <p className="text-slate-400 mt-2">Architecture réseau décentralisée et résiliente.</p>
+          </div>
+          <Connectivity />
+        </div>
+      </section>
+
+      {/* --- SECTION 4: LIVE MONITORING PREVIEW --- */}
+      <section className="relative z-20 bg-[#000810] py-24 px-6 overflow-hidden">
+        {/* Un petit background gradient pour casser la monotonie du noir */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-cyan-900/10 blur-[120px] rounded-full pointer-events-none" />
+        
+        <div className="max-w-6xl mx-auto text-center relative z-10">
+          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">Contrôle Total. <span className="text-cyan-400">Temps Réel.</span></h2>
+          <p className="text-slate-400 max-w-2xl mx-auto mb-12">
+            Visualisez la qualité de l'eau instantanément. Recevez des notifications push en cas de détection de contaminant ou de mouvement suspect.
+          </p>
+          
+          <DashboardPreview />
+        </div>
+      </section>
     </main>
   );
 }
