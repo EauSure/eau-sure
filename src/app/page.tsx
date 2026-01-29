@@ -9,6 +9,7 @@ import FAQ from '../../components/FAQ';
 import Contact from '../../components/Contact';
 import Footer from '../../components/Footer';
 import Navbar from '../../components/Navbar';
+import SpotlightCard from '../../components/SpotlightCard';
 
 // --- Animation Config ---
 const staggerContainer: Variants = {
@@ -53,8 +54,11 @@ export default function Home() {
         <div className="relative z-10 px-6 lg:px-16 flex flex-col justify-center lg:order-2 pb-10 lg:pb-0 -mt-8 lg:mt-0">
           
           <h1 className="text-5xl lg:text-8xl font-bold tracking-tighter text-white mb-4">
-            Eau<span className="text-cyan-400">Sûre</span>
-          </h1>
+  Eau
+  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 animate-text-gradient">
+    Sûre
+  </span>
+</h1>
           <p className="text-lg lg:text-xl text-cyan-200/90 max-w-lg font-light mb-8 lg:mb-12">
             L'intelligence artificielle au service de l'eau potable en milieux confinés.
           </p>
@@ -102,11 +106,11 @@ export default function Home() {
           <h2 className="text-2xl lg:text-3xl font-light mb-8 lg:mb-12 text-cyan-50">Architecture Technique</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-8 rounded-3xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm">
+            <SpotlightCard className="p-8 backdrop-blur-sm"> 
               <h3 className="text-cyan-400 font-mono text-sm mb-2">CORE_UNIT</h3>
               <p className="text-2xl font-semibold">ESP32-S3 + LoRaWAN</p>
               <p className="text-slate-400 mt-2 text-sm">Transmission longue portée.</p>
-            </div>
+            </SpotlightCard>
             <div className="md:col-span-2 p-1 rounded-3xl bg-gradient-to-br from-slate-800 to-slate-900">
               <div className="h-full w-full bg-[#0b121c] rounded-[22px] p-8 flex flex-col justify-center">
                  <FallAlert />

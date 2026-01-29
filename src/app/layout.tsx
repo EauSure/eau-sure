@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google"; // Using a clean technical font
+import { Inter } from "next/font/google";
 import "./globals.css";
-import SmoothScroll from "../../components/SmoothScroll"; // Import your component
+import SmoothScroll from "../../components/SmoothScroll";
+import ParticlesBackground from "../../components/ParticlesBackground"; // <-- IMPORT
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,10 +19,18 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className={`${inter.className} bg-[#000810] text-slate-200 antialiased`}>
-        {/* Wrap everything inside SmoothScroll */}
+        
+        {/* --- L'EFFET PARTICULES --- */}
+        {/* Il est en position fixed (z-0) derrière le contenu */}
+        <ParticlesBackground />
+
         <SmoothScroll>
-          {children}
+          {/* Le contenu doit avoir un z-index relatif pour passer devant les particules */}
+          <div className="relative z-10">
+            {children}
+          </div>
         </SmoothScroll>
+        
       </body>
     </html>
   );
