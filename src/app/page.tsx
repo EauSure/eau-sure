@@ -5,6 +5,9 @@ import FallAlert from '../../components/FallAlert';
 import HeroSceneWrapper from '../../components/HeroSceneWrapper';
 import DashboardPreview from '../../components/DashboardPreview';
 import Connectivity from '../../components/Connectivity';
+import FAQ from '../../components/FAQ';
+import Contact from '../../components/Contact';
+import Footer from '../../components/Footer';
 
 // --- Animation Config ---
 const staggerContainer: Variants = {
@@ -155,6 +158,20 @@ export default function Home() {
           <DashboardPreview />
         </div>
       </section>
+      {/* AJOUTER CECI APRES DashboardPreview */}
+
+      {/* --- SECTION 5: FAQ --- */}
+      <section className="relative z-20 bg-[#000810] border-t border-slate-900">
+        <FAQ />
+      </section>
+
+      {/* --- SECTION 6: CONTACT --- */}
+      <section className="relative z-20">
+        <Contact />
+      </section>
+
+      {/* --- FOOTER --- */}
+      <Footer />
     </main>
   );
 }
