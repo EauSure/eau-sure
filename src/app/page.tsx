@@ -8,6 +8,7 @@ import Connectivity from '../../components/Connectivity';
 import FAQ from '../../components/FAQ';
 import Contact from '../../components/Contact';
 import Footer from '../../components/Footer';
+import Navbar from '../../components/Navbar';
 
 // --- Animation Config ---
 const staggerContainer: Variants = {
@@ -34,22 +35,21 @@ export default function Home() {
   return (
     <main className="min-h-screen overflow-hidden">
       
+      {/* --- NAVIGATION BAR --- */}
+      <Navbar />
+      
       {/* --- SECTION 1: HERO SPLIT-SCREEN --- */}
-      {/* 1. Removed 'pt-20'. Added 'min-h-[90vh]' to ensure it fits well on mobile screens */}
-      <section className="relative min-h-[90vh] lg:min-h-screen grid grid-cols-1 lg:grid-cols-2 items-center">
+      {/* AJOUT id="overview" pour la navigation */}
+      <section id="overview" className="relative min-h-[90vh] lg:min-h-screen grid grid-cols-1 lg:grid-cols-2 items-center">
         
         {/* LEFT COLUMN: 3D Sphere */}
-        {/* Changed 'h-[35vh]' to 'h-[45vh]' to give it more breathing room */}
-        {/* Added 'overflow-visible' so the glow isn't cut off */}
         <div className="h-[45vh] lg:h-screen w-full relative z-0 lg:order-1 flex items-center justify-center overflow-visible cursor-move active:cursor-grabbing">
-          {/* Removed 'scale-110' which was making it too big */}
           <div className="w-full h-full transform origin-center">
              <HeroSceneWrapper />
           </div>
         </div>
 
         {/* RIGHT COLUMN: Text & Content */}
-        {/* 3. Reduced 'pb-20' and padding. Added '-mt-8' on mobile to pull text closer to sphere. */}
         <div className="relative z-10 px-6 lg:px-16 flex flex-col justify-center lg:order-2 pb-10 lg:pb-0 -mt-8 lg:mt-0">
           
           <h1 className="text-5xl lg:text-8xl font-bold tracking-tighter text-white mb-4">
@@ -95,8 +95,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- SECTION 2: BENTO GRID (Inchanged) --- */}
-      <section className="relative z-20 bg-[#000810] py-16 px-6">
+      {/* --- SECTION 2: BENTO GRID --- */}
+      {/* AJOUT id="specs" pour la navigation */}
+      <section id="specs" className="relative z-20 bg-[#000810] py-16 px-6">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl lg:text-3xl font-light mb-8 lg:mb-12 text-cyan-50">Architecture Technique</h2>
           
@@ -146,7 +147,6 @@ export default function Home() {
 
       {/* --- SECTION 4: LIVE MONITORING PREVIEW --- */}
       <section className="relative z-20 bg-[#000810] py-24 px-6 overflow-hidden">
-        {/* Un petit background gradient pour casser la monotonie du noir */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-cyan-900/10 blur-[120px] rounded-full pointer-events-none" />
         
         <div className="max-w-6xl mx-auto text-center relative z-10">
@@ -158,10 +158,10 @@ export default function Home() {
           <DashboardPreview />
         </div>
       </section>
-      {/* AJOUTER CECI APRES DashboardPreview */}
 
       {/* --- SECTION 5: FAQ --- */}
-      <section className="relative z-20 bg-[#000810] border-t border-slate-900">
+      {/* AJOUT id="faq" pour la navigation */}
+      <section id="faq" className="relative z-20 bg-[#000810] border-t border-slate-900">
         <FAQ />
       </section>
 

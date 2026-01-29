@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+/* For Chrome, Safari, and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* For Firefox, IE, and Edge */
+html, body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
 :root {
   --background: #ffffff;
   --foreground: #171717;
