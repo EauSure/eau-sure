@@ -14,25 +14,29 @@ export default function DashboardPreview() {
   return (
     <div className="w-full flex justify-center py-12">
       <Tilt 
-        tiltMaxAngleX={8}  // Slightly increased for better feel
+        tiltMaxAngleX={8} 
         tiltMaxAngleY={8} 
         perspective={1000} 
-        glareEnable={true} // Adds a nice light reflection
-        glareMaxOpacity={0.1}
+        glareEnable={true} 
+        glareMaxOpacity={0.15} // Slightly increased visibility
         glareColor="#22d3ee"
         glarePosition="all"
         scale={1.02}
-        className="w-full max-w-4xl"
+        // --- CRITICAL FIXES START HERE ---
+        // 1. Force the Glare layer itself to have 24px corners (equals rounded-3xl)
+        glareBorderRadius="24px"
+        // 2. We apply the clipping to the TILT component (the wrapper), not just the inner div.
+        className="w-full max-w-4xl rounded-3xl overflow-hidden"
+        style={{ borderRadius: '24px' }} // Inline style ensures the 3D context respects the curve
+        // --- CRITICAL FIXES END HERE ---
       >
-        {/* FIX APPLIED HERE:
-           1. 'select-none': Disables text selection.
-           2. 'touch-none': Tells browser "don't scroll/zoom when touching this", let the app handle it.
-           3. 'cursor-grab': Shows a hand cursor.
-           4. 'drag-none': Prevents image dragging.
-        */}
         <div 
-          className="bg-[#0b121c]/80 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 lg:p-10 shadow-2xl relative overflow-hidden group select-none cursor-grab active:cursor-grabbing"
-          style={{ WebkitTapHighlightColor: 'transparent' }} // Removes the blue tap box on Android/iOS
+          // Removed 'rounded-3xl' from here because the parent Tilt handles it now
+          className="bg-[#0b121c]/80 backdrop-blur-xl border border-slate-800 p-6 lg:p-10 shadow-2xl relative group select-none cursor-grab active:cursor-grabbing h-full"
+          style={{ 
+            WebkitTapHighlightColor: 'transparent',
+            transform: 'translateZ(0)',
+          }} 
         >
           
           {/* Background Glow */}
@@ -50,8 +54,7 @@ export default function DashboardPreview() {
             </div>
           </div>
 
-          {/* Chart */}
-          {/* pointer-events-none on the chart container prevents the tooltips from interfering with the tilt */}
+          {/* Chart Container */}
           <div className="h-[300px] w-full relative z-10 pointer-events-none">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data}>
