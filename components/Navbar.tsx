@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, FileText, Activity, Mail, Home } from 'lucide-react';
 import Link from 'next/link'; // Import nécessaire pour la navigation entre pages
 import { usePathname } from 'next/navigation'; // Pour savoir sur quelle page on est
+import Logo from './Logo';
 
 const navLinks = [
   { name: 'Overview', href: '/#overview', icon: Home },
